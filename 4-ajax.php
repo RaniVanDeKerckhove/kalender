@@ -16,7 +16,7 @@ switch ($_POST["req"]) {
     $dayLast = (new DateTime($dateLast))->format("w");
 
     //namen
-    $sunFirst = true; 
+    $sunFirst = true;
     $days = ["Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"];
     if ($sunFirst) { array_unshift($days, "Zondag"); }
     else { $days[] = "Zondag"; }
@@ -39,7 +39,7 @@ switch ($_POST["req"]) {
         <?php if (isset($events["d"][$day])) { foreach ($events["d"][$day] as $eid) { ?>
         <div class="calevt" data-eid="<?=$eid?>"
              style="background:<?=$events["e"][$eid]["evt_color"]?>">
-          <?=$events["e"][$eid]["evt_text"]?>
+          <?=$events["e"][$eid]["evt_trainer"]?>
         </div>
         <?php if ($day == $events["e"][$eid]["first"]) {
           echo "<div id='evt$eid' class='calninja'>".json_encode($events["e"][$eid])."</div>";
@@ -57,7 +57,7 @@ switch ($_POST["req"]) {
   case "save":
     if (!is_numeric($_POST["eid"])) { $_POST["eid"] = null; }
     echo $_CAL->save(
-      $_POST["start"], $_POST["end"], $_POST["txt"], $_POST["txt2"], $_POST["txt3"], $_POST["txt4"],$_POST["txt5"], $_POST["color"],
+      str_replace("T", " ", $_POST["start"]), str_replace("T", " ", $_POST["end"]), $_POST["txt"], $_POST["txt2"], $_POST["txt3"], $_POST["txt4"],$_POST["txt5"], $_POST["color"],
       isset($_POST["eid"]) ? $_POST["eid"] : null
     ) ? "OK" : $_CAL->error ;
     break;

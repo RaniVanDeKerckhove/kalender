@@ -35,8 +35,7 @@ class Calendar {
   }
 
   // event opslaan
-  function save ($txt, $txt2, $txt3, $txt4, $txt5, $start, $end, $color, $id=null) {
-   
+  function save ($start, $end, $txt, $txt2, $txt3, $txt4, $txt5, $color, $id=null) {
      // start en eind datum
      $uStart = strtotime($start);
      $uEnd = strtotime($end);
@@ -47,11 +46,11 @@ class Calendar {
 
     // insert en update
     if ($id==null) {
-      $sql = "INSERT INTO `events` (`evt_trainer`,`evt_lokaal`, `evt_bezigheid`,`evt_materiaal`,`evt_andere``evt_start`, `evt_end`, `evt_color`) VALUES (?,?,?,?,?,?,?,?)";
+      $sql = "INSERT INTO `events` (`evt_trainer`,`evt_lokaal`, `evt_bezigheid`,`evt_materiaal`,`evt_andere`,`evt_start`, `evt_end`, `evt_color`) VALUES (?,?,?,?,?,?,?,?)";
       $data = [$txt, $txt2, $txt3, $txt4, $txt5, $start, $end, $color];
     } else {
-      $sql = "UPDATE `events` SET `evt_trainer`=?,`evt_lokaal`=?, `evt_bezigheid`=?,`evt_materiaal`=?,`evt_andere`=?,`evt_start`=?, `evt_end`=?, `evt_color`=? WHERE `evt_id`=?";
-      $data = [$txt, $txt2, $txt3, $txt4, txt5, $start, $end, $color, $id];
+      $sql = "UPDATE `events` SET evt_trainer = ?, evt_lokaal = ?, evt_bezigheid = ?, evt_materiaal = ?, evt_andere = ?, evt_start = ?, evt_end = ?, evt_color = ? WHERE evt_id = ?";
+      $data = [$txt, $txt2, $txt3, $txt4, $txt5, $start, $end, $color, $id];
     }
 
     return $this->exec($sql, $data);
@@ -78,7 +77,6 @@ class Calendar {
       )", [$dayFirst, $dayLast, $dayFirst, $dayLast, $dayFirst, $dayLast]
     )) { return false; }
 
-   
     $events = ["e" => [], "d" => []];
     while ($row = $this->stmt->fetch()) {
       $eStartMonth = substr($row["evt_start"], 5, 2);
@@ -105,5 +103,5 @@ define("DB_CHARSET", "utf8");
 define("DB_USER", "root");
 define("DB_PASSWORD", "");
 
-// nieuw kalender object 
+// nieuw kalender object
 $_CAL = new Calendar();
